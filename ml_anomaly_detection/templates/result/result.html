@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+{{ block.super }}:apartment
+{% endblock %}
+
+
+{% block content %}
+
+<div class="col-12 mx-auto">
+    <h3 class="font125-b ms-3">Результаты расчета ML-модели аномалий по объектам «Многоквартирный дом»</h3><span>Всего позиций: {{item_count}} </span>
+
+    <table class="table table-striped demotable">
+        <thead style="position: sticky;
+  top: -1px;
+  z-index:1;background: #9d9e9e; font-size:14px">
+            <tr>
+                <th scope="col">Адрес объекта</th>
+                <th scope="col">Период</th>
+                <!-- <th scope="col">Тип объекта</th> -->
+                <th scope="col">№ ОДПУ</th>
+                <th scope="col">Вид энерг-а ГВС</th>
+                <th scope="col">Этажей</th>
+                <th scope="col">Дата постройки</th>
+                <th scope="col">Площадь</th>
+                <th scope="col">Группа этажность объекта</th>
+                <th scope="col">Группа год постройки</th>
+                <th scope="col">Текущее потребление, Гкал</th>
+                <th scope="col">Уд.потребление, Гкал/м2</th>
+                <th scope="col">Hotelling's T-squared</th>
+                <th scope="col">Q residuals</th>
+                <th scope="col">Ниже медианы</th>
+                <th scope="col">0.25% ниже медианы</th>
+                <th scope="col">0.25% выше медианы</th>
+            </tr>
+        </thead>
+        <tbody style="font-size:12px">
+            {% for item in items%}
+            <tr>
+                <th scope="row">{{item.address2}}</th>
+                <!-- <td>{{item.period|date:"M-Y"}}</td> -->
+                <td>{{item.period|slice:":10"}}</td>
+                <td>{{item.odpu_number|slice:":8"}}</td>
+                <td>{{item.energy_type}}</td>
+                <td>{{item.floors}}</td>
+                <td>{{item.construction_date|slice:":4"}}</td>
+                <td>{{item.area}}</td>
+                <td>{{item.floors_group}}</td>
+                <td>{{item.construction_group}}</td>
+                <td class=' text-center'>{{item.current_consumption|floatformat:2}}</td>
+                <td class='text-danger text-center'>{{item.specific_data|floatformat:4}}</td>
+                <td>{{item.t_squared|floatformat:4 }}</td>
+                <td>{{item.q_residuals|floatformat:4 }}</td>
+                <td>{{item.below_median }}</td>
+                <td>{{item.median_below25 }}</td>
+                <td>{{item.median_above25 }}</td>
+
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}

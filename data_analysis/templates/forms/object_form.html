@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block title %} {{block.super}}:по объекту{% endblock %}
+
+
+
+{% block content %}
+{% if select_except %}
+<div class='ms-5 mt-5'>
+<h5 class='text-danger'>ВНИМАНИЕ! Адрес "{{address}}" не найден.</h5>
+<p>{{select_except}} c <b>{{last_period|date:"M-Y"}}</b> по <b>{{first_period|date:"M-Y"}}</b>.</p>
+<a href="{% url 'object_selection' %}">Вернуться к выбору</a>
+</div>
+{% else %}
+
+{% if items %}
+
+<div class="col-12 mx-auto">
+  <a href="{% url 'object_selection' %}">Вернуться к выбору</a>
+    <h3>Данные по объекту .</h3><span>Всего отчетов: {{items.count}}, за период c <b>{{last_period|date:"M-Y"}}</b> по <b>{{first_period|date:"M-Y"}}</b></span>
+
+    <table class="table table-striped demotable">
+        <thead style="position: sticky;
+  top: -1px;
+  z-index:1;background: #9d9e9e; font-size:14px">
+            <tr>
+                <th scope="col">Период</th>
+                <th scope="col">Подраз-ние</th>
+                <th scope="col">№ ОДПУ</th>
+                <th scope="col">Вид энерг-а ГВС</th>
+                <th scope="col">Адрес объекта</th>
+                <th scope="col">Тип объекта</th>
+                <th scope="col">Дата текущего показания</th>
+                <th scope="col">Текущее потребление, Гкал</th>
+                
+                
+                
+
+
+            </tr>
+        </thead>
+        <tbody style="font-size:12px">
+            {% for item in items%}
+            <tr>
+                <th score="row">{{item.period|date:"M-y"}}</th>
+                <td>{{item.subunit}}</td>
+                <td>{{item.odpu_number}}</td>
+                <td>{{item.energy_type}}</td>
+                <td>{{item.address}}</td>
+                <td>{{item.object_type}}</td>
+                <td class="text-center">{{item.current_date|date:"d-m-y"}}</td> 
+
+                <td class='text-danger text-center data_no'>{{item.current_consumption}}</td>
+                
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% else %}
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card1">
+      <div class="card-body">
+        <!-- Card -->
+        <div class="card-body ">
+          <h5>Выбор объекта - потребителя тепловой энергии</h5>
+        </div>
+        <div>
+          <div class="card-body">
+            <form action="#" method="post" novalidate="novalidate">
+              {% csrf_token %}
+              <div class="form-group">
+                 <label for="name" class="control-label mb-1"> <b>Адрес объекта</b> &nbsp &nbsp &nbsp
+                  &nbsp</label> 
+                {{ form.object_address }}
+                <button  type="submit" class="btn btn-sm btn-info btn-block ms-5">
+                  <span >Выбрать</span>
+                </button>
+              </div>
+
+              {% comment %} <div>
+                <button  type="submit" class="btn btn-info btn-block">
+                  <span >Выбрать</span>
+                </button>
+              </div> {% endcomment %}
+
+
+            </form>
+          </div>
+        </div>
+       
+
+      </div>
+    </div> <!-- .card -->
+    <div class="col-12 mx-auto">
+      <h5>Список объектов для справки:</h5>
+      <span>Всего позиций: {{objects.count}}</span>
+      
+      <table class="table table-striped demotable">
+      <thead style="position: sticky;
+      top: -1px;
+      z-index:1;background: #9d9e9e; font-size:14px">
+      <tr>
+      <!-- <th scope="col">№</th> -->
+      <th scope="col">Адрес объекта</th>
+      <th scope="col">Тип объекта</th>
+      <th scope="col">Этажность объекта</th>
+      <th scope="col">Дата постройки</th> 
+      <th scope="col">Общая площадь объекта</th>
+      </tr>
+      </thead>
+      <tbody style="font-size:12px">
+      {% for item in objects%}
+      <tr>
+      <!-- <td >{{item.id|add:1}}</td> -->
+      <th scope="row">{{item.address}}</th>
+      <td>{{item.object_type}}</td>
+      <td>{{item.floors}}</td>
+      <td>{{item.construction_date}}</td>
+      <td>{{item.area}}</td>
+      
+      </tr>
+      {% endfor %}
+      </tbody>
+      </table>
+      </div>
+      
+
+
+    
+  </div>
+  <!--/.col-->
+</div>
+{% endif %}
+{% endif %}
+
+{% endblock content %}

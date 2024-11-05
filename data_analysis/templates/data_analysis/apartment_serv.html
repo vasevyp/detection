@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+{{ block.super }}:a_serv
+{% endblock %}
+
+
+{% block content %}
+
+<div class="col-12 mx-auto">
+    <h3 class="font125-b ms-3">Потребление по объектам «Многоквартирный дом» service.py</h3><span>Всего позиций: {{items.count}} (для Аномально низкое/высокое (отклонение более 25%) потребление объекта за последний месяц.)</span>
+
+    <table class="table table-striped demotable">
+        <thead style="position: sticky;
+  top: -1px;
+  z-index:1;background: #9d9e9e; font-size:14px">
+            <tr>
+                {% comment %} <th scope="col">№</th> {% endcomment %}
+                <th scope="col">Период</th>
+                <th scope="col">Подраз-ние</th>
+                <th scope="col">№ ОДПУ</th>
+                <th scope="col">Вид энерг-а ГВС</th>
+                <th scope="col">Адрес объекта</th>
+                <th scope="col">Площадь</th>
+                <th scope="col">Дата постройки</th>
+                <th scope="col">Этажей</th>
+                <th scope="col">Текущее потребление, Гкал</th>  
+                <th scope="col">Уд.потребление, Гкал/м2</th> 
+                      
+
+
+            </tr>
+        </thead>
+        <tbody style="font-size:12px">
+            {% for item in items%}
+            <tr>
+                <th scope="row">{{item.period|date:"M-Y"}}</th>
+                <td>{{item.subunit}}</td>
+                <td>{{item.odpu_number}}</td>
+                <td>{{item.energy_type}}</td>
+                <td>{{item.address}}</td>
+                <td>{{item.area}}</td>
+                <td class="text-center">{{item.construction_date |date:"Y"}}</td>
+                <td>{{item.floors}}</td>               
+                <td class='text-danger text-center data_no'>{{item.current_consumption|floatformat:2}}</td>
+                <td class='text-danger text-center data_no'>{{item.specific_data|floatformat:4}}</td>
+                
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}

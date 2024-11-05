@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+{{ block.super }}:потребление - нет данных
+{% endblock %}
+
+
+{% block content %}
+
+<div class="">
+    <h3>Список адресов, по которым нет данных о платежах за тепловую энеpгию за все время.</h3>
+    
+    <div class=" col-4 ms-5"> 
+    <span class="ms-3 fw-bold text-decoration-underline">Всего позиций: {{items_count}}</span>
+
+        <ol>
+            {% for item in items %}
+            <li style="font-size:12px">{{item}}</li>
+
+            {% endfor %}
+        </ol> 
+    
+
+</div>
+
+
+{% endblock %}

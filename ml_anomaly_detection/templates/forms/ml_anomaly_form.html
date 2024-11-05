@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% block title %} {{block.super}}:по объекту{% endblock %}
+
+
+
+{% block content %}
+{% if select_except %}
+<div class='ms-5 mt-5'>
+<h5 class='text-danger'>ВНИМАНИЕ! Период не найден.</h5>
+<p>{{select_except}} </p>
+<a href="{% url 'select_mlanomaly_form' %}">Вернуться к выбору</a>
+</div>
+{% else %}
+
+{% if items %}
+
+<div class="col-12 mx-auto">
+  <a href="/model/select-mlanomaly-form">Вернуться к выбору</a>
+    <h5>Аномально низкое/высокое потребление тепловой энергии за <b>{{period|slice:":7"}}</b> </h5>
+    <b>Всего позиций:</b> {{items.count}}. &nbsp &nbsp <b>Вариант расчета:</b> {{variant}}
+
+    <table class="table table-striped demotable">
+        <thead style="position: sticky;
+  top: -1px;
+  z-index:1;background: #9d9e9e; font-size:14px">
+            <tr>
+                <th scope="col">Адрес объекта</th>
+               
+                <th scope="col">№ ОДПУ</th>
+                <th scope="col">Вид энерг-а ГВС</th>
+                <th scope="col">Этажей</th>
+                <th scope="col">Дата постройки</th>
+                <th scope="col">Площадь</th>
+                
+                <th scope="col">Текущее потребление, Гкал</th>
+                <th scope="col">Уд.потребление, Гкал/м2</th>
+                <th scope="col">Hotelling's T-squared</th>
+                <th scope="col">Q residuals</th>
+                <th scope="col">Ниже медианы</th>
+                <th scope="col">0.25% ниже медианы</th>
+                <th scope="col">0.25% выше медианы</th>
+            </tr>
+        </thead>
+        <tbody style="font-size:12px">
+            {% for item in items%}
+            <tr>
+                <th scope="row">{{item.address2}}</th>
+               
+                <td>{{item.odpu_number|slice:":8"}}</td>
+                <td>{{item.energy_type}}</td>
+                <td>{{item.floors}}</td>
+                <td>{{item.construction_date|slice:":4"}}</td>
+                <td>{{item.area}}</td>
+            
+                <td class=' text-center'>{{item.current_consumption|floatformat:2}}</td>
+                <td class='text-danger text-center'>{{item.specific_data|floatformat:4}}</td>
+                <td class=' text-center'>{{item.t_squared|floatformat:4 }}</td>
+                <td class=' text-center'>{{item.q_residuals|floatformat:4 }}</td>
+                <td class=' text-center'>{{item.below_median }}</td>
+                <td class=' text-center'>{{item.median_below25 }}</td>
+                <td class=' text-center'>{{item.median_above25 }}</td>
+
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% else %}
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card1">
+      <div class="card-body">
+      
+        <div class="card-body ">
+          <h5>Выбрать Аномально низкое/высокое (отклонение более 25%) потребление тепловой энергии за месяц</h5>
+        </div>
+        <div>
+          <div class="card-body">
+            <form action="#" method="post" novalidate="novalidate">
+              {% csrf_token %}
+              <div class="form-group">
+                 <p for="name" class="control-label mb-1"> <b>Месяц</b> (01-01-2022)&nbsp &nbsp &nbsp
+                  &nbsp</p> 
+                {{ form.month }}
+                <p for="name" class="control-label mb-1"> <b>Alpha</b> </p> 
+                  {{ form.alpha }}
+                  <p for="name" class="control-label mb-1"> <b>Beta</b> </p> 
+                  {{ form.beta }}
+                  <p for="name" class="control-label mb-1"> <b>Вариант расчета</b> </p> 
+                  {{ form.variant }}
+                <button  type="submit" class="btn btn-sm btn-info btn-block ms-5">
+                  <span >Выбрать</span>
+                </button>
+              </div>
+              <ul>
+                где:
+                <li>С1 - Hotelling's T-squared < 5% от выборки - показатель аномальности;</li>
+                <li>С2 - Q residuals > 95% от выборки - показатель аномальности. </li>
+              </ul>
+              
+
+              {% comment %} <div>
+                <button  type="submit" class="btn btn-info btn-block">
+                  <span >Выбрать</span>
+                </button>
+              </div> {% endcomment %}
+
+
+            </form>
+          </div>
+        </div>
+       
+
+      </div>
+    </div> 
+        
+
+
+    
+  </div>
+
+</div>
+{% endif %}
+{% endif %}
+
+{% endblock content %}

@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+{{ block.super }}:потребление - нет данных
+{% endblock %}
+
+
+{% block content %}
+
+<div class="col-12 mx-auto">
+    <h3>Данные по объектам без указания потребления тепловой энергии.</h3><span> Период c <b>{{item_period_f|date:"M-Y"}}</b> по <b>{{item_period_l|date:"M-Y"}}</b>.</span>&nbsp;&nbsp;<span>Всего позиций: {{item_count}}, <a href="{% url 'address_data_none' %}"> + Количество адресов,по которым нет данных  {{address_none}}.</a></span>
+
+    <table class="table table-striped demotable">
+        <thead style="position: sticky;
+  top: -1px;
+  z-index:1;background: #9d9e9e; font-size:14px">
+            <tr>
+                <th scope="col">Период</th>
+                <th scope="col">Подраз-ние</th>
+                <th scope="col">№ ОДПУ</th>
+                <th scope="col">Вид энерг-а ГВС</th>
+                <th scope="col">Адрес объекта</th>
+                <th scope="col">Тип объекта</th>
+                <th scope="col">Дата текущего показания</th>
+                <th scope="col">Текущее потребление, Гкал</th>
+                
+                
+                
+
+
+            </tr>
+        </thead>
+        <tbody style="font-size:12px">
+            {% for item in items%}
+            <tr>
+                <th score="row">{{item.period|date:"M-y"}}</th>
+                <td>{{item.subunit}}</td>
+                <td>{{item.odpu_number}}</td>
+                <td>{{item.energy_type}}</td>
+                <td>{{item.address}}</td>
+                <td>{{item.object_type}}</td>
+                <td class="text-center">{{item.current_date|date:"d-m-y"}}</td> 
+
+                <td class='text-danger text-center data_no'>{{item.current_consumption}}</td>
+                
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

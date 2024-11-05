@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+{{ block.super }}:apartment
+{% endblock %}
+
+
+{% block content %}
+
+<div class="col-12 mx-auto">
+    <h3 class="font125-b ms-3">Потребление тепловой энергии по объектам «Многоквартирный дом»</h3><span>Всего позиций: {{item_count}}  (аномальное (отклонение более 25% от медианы) потребление: Индекс = -1 - пониженное (< 25%), Индекс = 1 - повышенное (> 25%) потребление.)</span>
+
+    <table class="table table-striped demotable">
+        <thead style="position: sticky;
+  top: -1px;
+  z-index:1;background: #9d9e9e; font-size:14px">
+            <tr>
+                {% comment %} <th scope="col">№</th> {% endcomment %}
+                <th scope="col">Период</th>
+                <th scope="col">Подраз-ние</th>
+                <th scope="col">№ ОДПУ</th>
+                <th scope="col">Вид энерг-а ГВС</th>
+                <th scope="col">Адрес объекта</th>                
+                <th scope="col">Дата постройки</th>
+                <th scope="col">Этажей</th>
+                <th scope="col">Площадь</th>
+                <th scope="col">Текущее потребление, Гкал</th>  
+                <th scope="col">Уд.потребление, Гкал/м2</th>
+                <th scope="col">Группа объекта</th>
+
+                <th scope="col">Медиана</th>
+                <th scope="col">Индекс</th>
+                <th scope="col">Коэф. отклонения</th> 
+                      
+
+
+            </tr>
+        </thead>
+        <tbody style="font-size:12px">
+            {% for item in items%}
+            <tr>
+                <th scope="row">{{item.period}}</th>
+                <!-- <th scope="row">{{item.period|date:"M-Y"}}</th> -->
+                <td>{{item.subunit}}</td>
+                <td>{{item.odpu_number}}</td>
+                <td>{{item.energy_type}}</td>
+                <td>{{item.address}}</td>               
+                <td class="text-center">{{item.construction_date}}</td>
+                <td>{{item.floors}}</td>  
+                <td>{{item.area}}</td>             
+                <td class=' text-center'>{{item.current_consumption|floatformat:2}}</td>
+                <td class='text-danger text-center'>{{item.specific_data|floatformat:4}}</td>
+                <td>{{item.object_group }}</td>
+
+                <td>{{item.median_value_s|floatformat:4  }}</td>
+                {% if item.index_abnormal == -1 or item.index_abnormal == None %}
+                <td class='text-danger'>{{item.index_abnormal }}</td>
+                {% endif %}
+                {% if item.index_abnormal == 1 %}
+                <td class='text-pramary'>{{item.index_abnormal }}</td>
+                {% endif %}
+                {% if item.index_abnormal == 0 %}
+                <td class='text-success'>{{item.index_abnormal }}</td>
+                {% endif %}
+                <!-- <td>{{item.index_abnormal }}</td> -->
+                <td>{{item.median_value_s_deviation|floatformat:4 }}</td>
+                
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}

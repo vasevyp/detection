@@ -1,0 +1,179 @@
+{% load static %}
+{# Load the tag library #}
+{% load bootstrap5 %}
+
+
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+{% block head %}
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="shortcut icon" class="rounded-pill" type="image/png" href="{% static 'logo/logo-r.png' %}" />
+  <!-- <link rel="stylesheet" href="{% static 'bootstrap5/css/bootstrap.min.css' %}"> -->
+  <!-- <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"> -->
+
+  {% load bootstrap5 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+
+  <title>{% block title %}РАО{% endblock %}</title>
+</head>
+{% endblock %}
+
+<body>
+  <div class="mx-2">
+    <ul class="nav bg-primary">
+      <li class="nav-item border">
+        <!-- <img src="{% static 'logo/Group_33.webp' %}" alt="logo" height="40"> -->
+        <img src="{% static 'logo/logo.png' %}" alt="logo" height="40">
+      </li>
+      <li class="nav-item">
+        <a class="nav-link link-light" href="{% url 'main' %}">Главная</a>
+      </li>
+      <li class="navbar-nav nav-item dropdown ms-1">
+        <a class="nav-link dropdown-toggle navbutt text-light" href="#" role="button" data-bs-toggle="dropdown"
+          aria-expanded="false">
+          Данные по потреблению
+        </a>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item " href="{% url 'energy_data_month' %}">Данные о потреблении за месяц</a></li>
+          <li><a class="dropdown-item " href="{% url 'energy_data_month_none' %}">Нулевые значения показаний за месяц
+            </a></li>
+
+          <li><a class="dropdown-item " href="{% url 'energy_data_total' %}">Данные о потреблении - Всего</a></li>
+
+          <li><a class="dropdown-item " href="{% url 'energy_data_total_none' %}">Нулевые значения показаний - Всего
+            </a></li>
+          <!-- <li><a class="dropdown-item" href="{% url 'energy_data_loading' %}" >Загрузить данные потребления тепловой энергии за отчетнай месяц</a></li> -->
+
+          <li>
+            <a class="dropdown-item" href="{% url 'apartment' %}">Многоквартирные дома - Всего</a>
+          </li>
+        </ul>
+      </li>
+      <li class="navbar-nav nav-item dropdown ms-3">
+        <a class="nav-link dropdown-toggle navbutt text-light" href="#" role="button" data-bs-toggle="dropdown"
+          aria-expanded="false">
+          Анализ данных
+        </a>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="{% url 'period_selection' %}">Выбрать нулевые данные за период</a></li>
+          <li><a class="dropdown-item " href="{% url 'double_data' %}">Равные значения показаний по периодам </a></li>
+          <li><a class="dropdown-item" href="{% url 'object_selection' %}">Выбрать данные потребления по объекту</a></li>
+          <li><a class="dropdown-item" href="{% url 'address_data_none' %}">Объекты, которые не подавали данные о
+              потреблении</a></li>
+          <li><a class="dropdown-item " href="{% url 'period_abnormal_selection' %}">Аномальное низкое/высокое потребление 
+          за месяц</a></li>
+             
+          
+        </ul>
+      </li>
+
+
+      <li class="navbar-nav nav-item dropdown ms-3">
+        <a class="nav-link dropdown-toggle navbutt text-light" href="#" role="button" data-bs-toggle="dropdown"
+          aria-expanded="false">
+          Результаты ML-модели
+        </a>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item " href="{% url 'result' %}">Индикаторы аномалий всех объектов за каждый период</a></li>
+          <li><a class="dropdown-item" href="{% url 'select_mlanomaly_form' %}">Выбор аномальных данных за месяц с учетом PCA коэффициентов</a></li>
+          <li>
+            <a class="dropdown-item" href="{% url 'forecast' %}">Отклонения от значений предсказанных эталонной моделью</a>
+          </li>
+          <li><a class="dropdown-item" href="{% url 'select_forecast_form' %}">Выбор данных ML-model прогноза потребления по периоду</a></li>
+          <li>
+        </ul>
+
+      </li>
+      <li class="navbar-nav nav-item dropdown ms-3">
+        <a class="nav-link dropdown-toggle navbutt text-light" href="#" role="button" data-bs-toggle="dropdown"
+          aria-expanded="false">
+          Объекты
+        </a>
+        <ul class="dropdown-menu">
+          <li>
+            <a class="dropdown-item" href="{% url 'objects_report' %}">База Объектов уточненная </a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="{% url 'objects' %}">База Объектов представленная</a>
+          </li>
+        </ul>
+
+      </li>
+
+      {% if request.user.is_superuser%}
+      <li class="nav-item">
+        <a class="nav-link link-light" href="{% url 'service_list' %}">Сервисы</a>
+      </li>
+
+
+      <li class="nav-item">
+        <a class="nav-link link-light" href="http://127.0.0.1:8000/admin/" target='blank'>Admin</a>
+      </li>
+      {% endif %}
+      <li class="nav-item">
+        <a class="nav-link link-light" href="{% url 'contact' %}">Контакты</a>
+      </li>
+      <li class="nav-item ms-1">
+        <a class="nav-link active navbutt text-light" href="{% url 'logout' %}">Выход</a>
+    </li>
+
+    {% if request.user.is_superuser%}
+
+    {% elif request.user.is_authenticated %}
+    <li class="nav-item ms-1">
+
+        <a class="nav-link active text-uppercase navbutt text-light">{{ user.username }}
+        </a>
+
+    </li>
+    {% endif %}
+   
+    </ul>
+
+    <div class="col-12 ml-3 mr-3 px-2">
+      {% block content %}CONTENT{% endblock %}
+      <!-- pagination -->
+      <div class="pagination" style="margin:3rem,30rem;">
+        <div class="">
+          <span>
+            {% if page_obj.has_other_pages %}
+            {% if page_obj.has_previous %}
+            <a class='pagination_a' href="?page=1">первая</a>
+            <a class='pagination_a' href="?page={{ page_obj.previous_page_number }}">&laquo;prev&laquo;</a>
+            {% endif %}
+
+            <span class="current">
+              стр. {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+            <a class='pagination_a' href="?page={{ page_obj.next_page_number }}">&raquo;next&raquo;</a>
+            <a class='pagination_a' href="?page={{ page_obj.paginator.num_pages }}">последняя</a>
+            {% endif %}
+            {% endif %}
+          </span>
+        </div>
+      </div>
+      <!-- end pagination -->
+    </div>
+
+
+
+
+
+
+
+  </div>
+
+</body>
+
+</html>

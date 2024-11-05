@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+{{ block.super }}:in dev
+{% endblock %}
+
+
+{% block content %}
+<div class="container col-12 mx-auto mb-3 content">
+
+
+
+    <div class="border my-3 p-3 ">
+        <h5>Форма расчета аномального (отклонение более 25%) потребления тепловой энергии за месяц</h5>
+        <!-- Card -->
+
+        <span>Выбрать <b>месяц</b> рассчета аномального потребление тепловой энергии.</span>
+
+        <div>
+            <div class="card-body">
+                <form action="#" method="post" novalidate="novalidate">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="name" class="control-label mb-1"> <b>Месяц</b> (01-01-2022)&nbsp &nbsp &nbsp
+                            &nbsp</label>
+                        {{ form.month_date }}
+                        <button type="submit" class="btn btn-sm btn-info btn-block ms-5">
+                            <span>Выполнить расчет данных в выбранном месяце</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+    </div>
+
+    <!-- .card -->
+</div>
+
+
+
+{% endblock %}

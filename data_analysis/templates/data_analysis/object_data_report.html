@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+{{ block.super }}:Объекты
+{% endblock %}
+
+
+{% block content %}
+
+<div class="col-12 mx-auto">
+    <h3 class="font125-b ms-3">Данные по объектам с учетом отчетов потребления тепловой энергии.</h3>
+    <span>Всего позиций: {{item_count}}</span>
+
+    <table class="table table-striped demotable">
+        <thead style="position: sticky;
+  top: -1px;
+  z-index:1;background: #9d9e9e; font-size:14px">
+            <tr>
+                <!-- <th scope="col">№</th> -->
+                <th scope="col">Адрес объекта</th>
+                <th scope="col">Тип объекта</th>
+                <th scope="col">Этажность объекта</th>
+                <th scope="col">Дата постройки</th>               
+                <th scope="col">Общая площадь объекта</th>
+    
+            </tr>
+        </thead>
+        <tbody style="font-size:12px">
+            {% for item in items%}
+            <tr>
+                <!-- <td >{{item.id}}</td>                -->
+                <th scope="row">{{item.address}}</th>
+                <td>{{item.object_type}}</td>
+                <td>{{item.floors|default_if_none:""}}</td>
+                <td>{{item.construction_date|default_if_none:""}}</td>
+                <td>{{item.area|default_if_none:""}}</td>
+                
+                
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}

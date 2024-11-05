@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+{{ block.super }}:in dev
+{% endblock %}
+
+
+{% block content %}
+<div class="container col-12 mx-auto mb-3 content">
+   
+
+    <h1 class="text-center">Сервисы приложения</h1>
+    <div>
+        <h4>Загрузка данных:</h4>
+
+
+        <!-- <div> -->
+        <p><span><a class="btn btn-success" href="{% url 'energy_data_loading' %}">Загрузить данные потребления
+                    тепловой
+                    энергии за отчетнай месяц</a></span></p>
+
+        <p><span><a class="btn btn-success" href="{% url 'object_data_loading' %}">Загрузить данные об объектах
+                    потребления
+                    тепловой
+                    энергии</a></span></p>
+        <p><span><a class="btn btn-success" href="{% url 'result_data_loading' %}">Загрузить результаты расчета ML-модели аномальных данных за
+                    месяц</a></span></p>
+        <p><span><a class="btn btn-success" href="{% url 'forecast_loading' %}">Загрузить результаты расчета ML-модели прогноза потребления за период</a></span></p>            
+                    <h4>Расчет аномальных данных:</h4>
+        <p><span><a class="btn btn-info" href="{% url 'double_data_update' %}">Пересчитать равные значения показаний
+                    по
+                    периодам</a></span></p>
+                    <h5>Порядок расчета аномального (отклонение более 25%) потребления по объектам: </h5>
+
+        <p><span><a class="btn btn-danger" href="{% url 'add_address' %}">1. Создать/добавить в базу объектов новые
+                    объекты / объекты из отчетов по
+                    потреблению</a></span> <b>ВНИМАНИЕ! База данных пересоздается вновь.</b></p>
+        <p><span><a class="btn btn-danger" href="{% url 'create_apartment_list' %}">2. Добавить данные объектов (этажность, год постройки, площадь) в данные
+                    по
+                    потреблению</a></span> <b>ВНИМАНИЕ! База данных пересоздается вновь.</b>
+        </p>
+        <h6>Для подготовки данных и рассчета аномально низкого/высокого потребления выполнить: </h6>
+        <p><span><a class="btn btn-primary " href="{% url 'apartment_object_group' %}">3. Создать группы объектов
+                    (apartment_object_group)</a></span></p>
+        <p><span><a class="btn btn-primary" href="{% url 'hight_low_consumption' %}">4. Рассчитать аномальное
+                    (отклонение
+                    более 25%) потребление за месяц.</a></span></p>
+
+
+        <!-- </div> -->
+      
+        <h3>Прочие сервисы:</h3>
+        <!-- <p><span><a class="btn btn-secondary " href="{% url 'print_apartment' %}">Вывести Apartment в файл
+                    books/Apartment_test.xlsx </a></span></p> -->
+        <!-- <span><a class="btn btn-secondary" href="{% url 'in_dev' %}">Задача 4 алгоритм</a></span> -->
+       
+        <span><a class="btn btn-secondary" href="#"> Вывести данные по различным отчетам в файл .xlsx ( доработка при необходимости)</a></span>
+    </div>
+
+</div>
+
+
+
+{% endblock %}

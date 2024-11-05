@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+{{ block.super }}:потребление
+{% endblock %}
+
+
+{% block content %}
+
+<div class="col-12 mx-auto">
+    <h3>Данные о потреблении тепловой энергии.</h3> 
+    
+    <span>Всего позиций: {{item_count}}, период c <b>{{item_period_f|date:"M-Y"}}</b> по <b>{{item_period_l|date:"M-Y"}}</b></span>
+
+    <table class="table table-striped demotable">
+        <thead style="position: sticky;
+  top: -1px;
+  z-index:1;background: #9d9e9e; font-size:14px">
+            <tr>
+                {% comment %} <th scope="col">№</th> {% endcomment %}
+                <th scope="col">Период</th>
+                <th scope="col">Подраз-ние</th>
+                <th scope="col">№ ОДПУ</th>
+                <th scope="col">Вид энерг-а ГВС</th>
+                <th scope="col">Адрес объекта</th>
+                <th scope="col">Тип объекта</th>
+                <th scope="col">Дата текущего показания</th> 
+                <th scope="col">Текущее потребление, Гкал</th>
+                {% comment %} <th scope="col">Сформировал</th> {% endcomment %}
+                {% comment %} <th scope="col">Дата формирования отчета</th> {% endcomment %}
+                
+
+
+            </tr>
+        </thead>
+        <tbody style="font-size:12px">
+            
+            {% for item in items%}
+            <tr>
+                <th scope="row">{{item.period|date:"M-Y"}}</th>
+                <td>{{item.subunit}}</td>
+                <td>{{item.odpu_number|truncatechars:16}}</td>
+                <td>{{item.energy_type}}</td>
+                <td>{{item.address}}</td>
+                <td>{{item.object_type|truncatechars:16}}</td>
+                <td class="text-center">{{item.current_date|date:"d-m-y"}}</td> 
+                {% if item.current_consumption >= '0' or item.current_consumption == ''%}
+                <td class="text-center">{{item.current_consumption}}</td>
+                {% else %}
+                <td style="background-color:#eb0b0b;"></td>
+                {% endif %}
+                {% comment %} <td>{{item.generated_by|truncatechars:16}}</td>  {% endcomment %}
+                {% comment %} <td>{{item.created_date|date:"d-m-y"}}</td>  {% endcomment %}
+
+            </tr>
+            {% endfor %}
+            
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}

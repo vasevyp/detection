@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block title %} {{block.super}}:по объекту{% endblock %}
+
+
+
+{% block content %}
+{% if select_except %}
+<div class='ms-5 mt-5'>
+<h5 class='text-danger'>ВНИМАНИЕ! Период не найден.</h5>
+<p>{{select_except}} </p>
+<a href="{% url 'select_forecast_form' %}">Вернуться к выбору</a>
+</div>
+{% else %}
+
+{% if items %}
+
+<div class="col-12 mx-auto">
+  <a href="/model/select-forecast-form">Вернуться к выбору</a>
+    <h5>Сравнение прогноза и факта потребления тепловой энергии за <b>{{period|slice:":7"}}</b> </h5>
+    <b>Выбрано позиций:</b> {{items.count}} &nbsp &nbsp Всего позиций за месяц:</b> {{month_sample}} &nbsp &nbsp <b>Выборка:</b> {{sample}}%
+
+    <table class="table table-striped demotable">
+        <thead style="position: sticky;
+  top: -1px;
+  z-index:1;background: #9d9e9e; font-size:14px">
+            <tr>
+                <th scope="col">Период</th>
+                <th scope="col">Адрес объекта</th>
+                <th scope="col">Тип объекта</th>
+                <th scope="col">№ ОДПУ</th>
+                <th scope="col">Вид энерг-а ГВС</th>
+                <th scope="col">Этажей</th>
+                <th scope="col">Дата постройки</th>
+                <th scope="col">Площадь</th>                
+                <th scope="col">Факт. уд.потребление, Гкал/м2</th>
+                <th scope="col">Прогноз. уд.потребление, Гкал/м2</th>
+                <th scope="col">Факт-Прогноз, Гкал/м2</th>
+                <th scope="col">Коэф.(прогноз к факту)</th>
+            </tr>
+        </thead>
+        <tbody style="font-size:12px">
+            {% for item in items%}
+            <tr>
+                <td>{{item.period|date:"M-Y"}}</td>
+                <th scope="row">{{item.address2}}</th>               
+                <td>{{item.object_type}}</td>
+                <td>{{item.odpu_number|slice:":8"}}</td>
+                <td>{{item.energy_type}}</td>
+                <td>{{item.floors}}</td>
+                <td class="text-center">{{item.construction_date|date:"Y"}}</td>
+                <td>{{item.area}}</td>                
+                <td class='text-danger text-center'>{{item.specific_data|floatformat:2}}</td>
+                <td>{{item.forecast|floatformat:2 }}</td>
+                <td>{{item.forecast_deviation|floatformat:2 }}</td>
+                <td>{{item.forecast_index|floatformat:2}}</td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% else %}
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card1">
+      <div class="card-body">
+      
+        <div class="card-body ">
+          <h5>Выбрать месяц и долю объектов с самыми высокими отклонениями потребления теплоэнергии <br>от значения, расчитанного 
+            ML-моделью</h5>
+        </div>
+        <div>
+          <div class="card-body">
+            <form action="#" method="post" novalidate="novalidate">
+              {% csrf_token %}
+              <div class="form-group">
+                 <p for="name" class="control-label my-2"> <b>Месяц</b> (01-01-2022)&nbsp &nbsp &nbsp
+                  &nbsp</p> 
+                {{ form.month }}
+                <p for="name" class="control-label my-2"> <b>Выборка %</b> </p> 
+                  {{ form.sample }}
+                  <p for="name" class="control-label my-2"> <b>Вариант сортировки</b> </p> 
+                  {{ form.sortfilter }}
+                <button  type="submit" class="btn btn-sm btn-info btn-block ms-5">
+                  <span >Выбрать</span>
+                </button>
+              </div>
+
+
+            </form>
+          </div>
+        </div>
+       
+
+      </div>
+    </div>
+
+
+    
+  </div>
+ 
+</div>
+{% endif %}
+{% endif %}
+
+{% endblock content %}

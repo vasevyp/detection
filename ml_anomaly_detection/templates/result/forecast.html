@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+{{ block.super }}:apartment
+{% endblock %}
+
+
+{% block content %}
+
+<div class="col-12 mx-auto">
+    <h3 class="font125-b ms-3">Результаты ML-расчета прогноза потребления тепловой энергии и сравнение с фактом.</h3><span>Всего
+        позиций: {{item_count}} </span>
+
+    <table class="table table-striped demotable">
+        <thead style="position: sticky;
+  top: -1px;
+  z-index:1;background: #9d9e9e; font-size:14px">
+            <tr>
+                <th scope="col">Период</th>
+                <th scope="col">Адрес объекта</th>
+                <th scope="col">Тип объекта</th>
+                <th scope="col">№ ОДПУ</th>
+                <th scope="col">Вид энерг-а ГВС</th>
+                <th scope="col">Этажей</th>
+                <th scope="col">Дата постройки</th>
+                <th scope="col">Площадь</th>                
+                <th scope="col">Факт. уд.потребление, Гкал/м2</th>
+                <th scope="col">Прогноз. уд.потребление, Гкал/м2</th>
+                <th scope="col">Факт-Прогноз, Гкал/м2</th>
+                <th scope="col">Коэф.(прогноз к факту)</th>
+                
+            </tr>
+        </thead>
+        <tbody style="font-size:12px">
+            {% for item in items%}
+            <tr>
+                <td>{{item.period|date:"M-Y"}}</td>
+                <th scope="row">{{item.address2}}</th>               
+                <td>{{item.object_type}}</td>
+                <td>{{item.odpu_number|slice:":8"}}</td>
+                <td>{{item.energy_type}}</td>
+                <td>{{item.floors}}</td>
+                <td class="text-center">{{item.construction_date|date:"Y"}}</td>
+                <td>{{item.area}}</td>                
+                <td class='text-danger text-center'>{{item.specific_data|floatformat:4}}</td>
+                <td>{{item.forecast|floatformat:4 }}</td>
+                <td>{{item.forecast_deviation|floatformat:4 }}</td>
+                <td>{{item.forecast_index|floatformat:4}}</td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}
