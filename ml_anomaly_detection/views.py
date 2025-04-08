@@ -203,7 +203,7 @@ def select_mlanomaly_form(request):
             print(index)
         queryset = TempAnomalData.objects.all()       
 
-        df.to_excel("../../books/select_mlanomaly_form1.xlsx", sheet_name="apartment_list")
+        # df.to_excel("../../books/select_mlanomaly_form1.xlsx", sheet_name="apartment_list")
         print(df)
        
 

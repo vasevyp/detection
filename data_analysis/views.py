@@ -58,15 +58,15 @@ def object_selection(request):
         address = request.POST.get("object_address")
 
         address=address.strip()
-       
-        item=EnergyDataTotal.objects.filter(address=address)
-        if item:
+
+        item = EnergyDataTotal.objects.filter(address=address)
+        if item :
             print('OK address', address)
             items = EnergyDataTotal.objects.filter(address=address)
         else:
-            select_except='По адресу нет данных о потреблении тепловой энергии'  
+            select_except='По адресу нет данных о потреблении тепловой энергии'
             print('NO address', address)
-            return render(request, "forms/object_form.html", {'select_except':select_except, 'address':address, 'first_period':first_period, 'last_period':last_period})     
+            return render(request, "forms/object_form.html", {'select_except':select_except, 'address':address, 'first_period':first_period, 'last_period':last_period})
     objects=ObjectDataReport.objects.all()
     return render(request, "forms/object_form.html", {'first_period':first_period, 'last_period':last_period, 'items':items,'form':form, 'objects':objects, 'select_except': select_except })   
 

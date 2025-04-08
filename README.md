@@ -57,7 +57,11 @@ python manage.py runserver
 
 Запуск сервера разработки по адресу http://127.0.0.1:8000/
 
-для базы были созданы: логин администратора (login:admin, password:rao), логин пользователя (login:user, password:user0000)
+*для демонстрационной базы были созданы:*
+
+ * логин администратора (login:admin, password:rao)
+ 
+ * логин пользователя (login:user, password:user0000)
 
 
 
